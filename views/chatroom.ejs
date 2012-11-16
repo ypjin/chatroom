@@ -1,0 +1,66 @@
+<html>
+    <head>
+    	<link rel="stylesheet" href="/css/style.css" type="text/css" media="screen" />
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+        <!-- include socket.io client js -->
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+        $(function(){
+            //establish websocket connection with server
+            var iosocket = io.connect('http://localhost:8080');
+            // var iosocket = io.connect('http://50a69e0da5f819807c002b87.cloudapp-qe.appcelerator.com');
+            iosocket.on('connect', function () {
+                $('#incomingChatMessages').append($('<li class="alert"><span>Connected</span></li>'));
+                
+                //when received message from server
+                iosocket.on('message', function(data) {
+                    var d = new Date();
+                    var icm = $('<li></li>');
+                    $('#incomingChatMessages').append(icm.html("<div class='icmb'><div class='cu'><span>" + data.user + "</span></div><div class='cm active'><span>" + data.message + "</span><time>"+d.getHours()+":"+(d.getMinutes()<10?'0':'')+d.getMinutes()+"</time></div><div class='clr'></div></div>"));
+                    setTimeout(function() { icm.find('.cm').removeClass('active') }, 1500);
+                    $('#chat-ctnr').scrollTop($('#incomingChatMessages')[0].scrollHeight + 100 );
+                });
+        
+                iosocket.on('disconnect', function() {
+                	iosocket.on('message', null);
+                    $('#incomingChatMessages').append('<li class="alert"><span>Disconnected</span></li>');
+                });
+            });
+
+            $('#outgoingChatMessage').keypress(function(event) {
+                if(event.which == 13) {
+                    event.preventDefault();
+                    
+                    //check for empty string.
+                    if($(this).val() === "") {
+                    	alert("Please type in chat message"); 
+                    	return false;
+                    }
+          
+                    //send message to chat server
+                    iosocket.emit('msg', { user: '<%=user.name%>', message: $('#outgoingChatMessage').val()});
+                    var d = new Date();
+                    console.log(d);
+                    var ocm = $('<li></li>');
+                    $('#incomingChatMessages').append(ocm.html("<div class='icmb'><div class='cu'><%=user.name%></div><div class='cm active'><span>" + $('#outgoingChatMessage').val() + "</span><time>"+d.getHours()+":"+(d.getMinutes()<10?'0':'')+d.getMinutes()+"</time></div><div class='clr'></div></div>"));
+                    $('#chat-ctnr').scrollTop($('#incomingChatMessages')[0].scrollHeight + 100 );
+                    setTimeout(function() { ocm.removeClass('active') }, 1500);
+
+                    $('#outgoingChatMessage').val('');
+                 }
+            });
+        });
+        </script>
+    </head>
+    <body>
+        <div id="ctnr">
+            <div id="ic"><span>Incoming Chat:</span></div>
+            <div id="chat-ctnr">
+                <ul id="incomingChatMessages"></ul>
+            </div>
+            <input type="text" id="outgoingChatMessage">
+            <br/>
+            <a href="/logout">logout</a>
+        </div>
+    </body>
+</html>
