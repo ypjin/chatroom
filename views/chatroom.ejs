@@ -7,7 +7,7 @@
         <script>
         $(function(){
             //establish websocket connection with server
-            var iosocket = io.connect('http://localhost:8080');
+            var iosocket = io.connect('/');
             // var iosocket = io.connect('http://50a69e0da5f819807c002b87.cloudapp-qe.appcelerator.com');
             iosocket.on('connect', function () {
                 $('#incomingChatMessages').append($('<li class="alert"><span>Connected</span></li>'));

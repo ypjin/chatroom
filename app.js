@@ -3,7 +3,7 @@ var logger = require('acs').logger;
 
 // initialize app (setup ACS library and logger)
 function start(app, express) {
-	ACS.init('04mV26UF5Uhn6yzcWs9biHtbnqxVfm9B', '1z1HgAlxleiVXbCLz1pZqpSvJtEDoZWu');
+    ACS.init('Pi3lvcEaaDvLZ7Fcixntx4PlJPjG7zb4');
 	logger.setLevel('DEBUG');
 	
 	//use connect.session

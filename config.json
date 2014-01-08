@@ -1,20 +1,24 @@
 {
-  "routes":
-  [
-    { "path": "/", "callback": "application#index" },
-    { "path": "/login", "method": "get", "callback": "application#login" },
-    { "path": "/login", "method": "post", "callback": "session#login" },
-    { "path": "/logout", "method": "get", "callback": "session#logout" },
-    { "path": "/signup", "method": "get", "callback": "application#signup" },
-    { "path": "/signup", "method": "post", "callback": "user#signup" },
-    { "path": "/chatroom", "method": "get", "callback": "application#chatroom" }
-  ],
-  "filters":
-  [
-  	 { "path": "/chatroom", "callback": "session_filter#checkSession" }
-  ],
-  "websockets":
-  [
-  	{ "event": "msg", "callback": "chatroom#receiveMessage"}
-  ]
+    "routes":
+        [
+            { "path": "/", "callback": "application#index" },
+            { "path": "/clean", "callback": "application#cleanupACS" },
+            { "path": "/nv", "callback": "application#nodeVersion" },
+            { "path": "/mm", "callback": "application#eatMore" },
+            { "path": "/mb", "callback": "application#eatBuffer" },
+            { "path": "/login", "method": "get", "callback": "application#login" },
+            { "path": "/login", "method": "post", "callback": "session#login" },
+            { "path": "/logout", "method": "get", "callback": "session#logout" },
+            { "path": "/signup", "method": "get", "callback": "application#signup" },
+            { "path": "/signup", "method": "post", "callback": "user#signup" },
+            { "path": "/chatroom", "method": "get", "callback": "application#chatroom" }
+        ],
+    "filters":
+        [
+            { "path": "/chatroom", "callback": "session_filter#checkSession" }
+        ],
+    "websockets":
+        [
+            { "event": "msg", "callback": "chatroom#receiveMessage"}
+        ]
 }
